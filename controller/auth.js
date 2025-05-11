@@ -7,7 +7,8 @@ export const Register = async(req,res)=>{
     try {
         const {username,email,password} = req.body
         if(!username || !email || !password) {
-            return res.staus(400).json({message:'all field are require'})
+            console.log('all field are require')
+            return res.status(400).json({message:'all field are require'})
         }
 
         // if password is less than 6 character long
