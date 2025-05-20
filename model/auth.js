@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcryptjs";
+import "dotenv/config";
+
 
 const authSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -26,9 +28,16 @@ authSchema.methods.comparePassword = async function(userPassword) {
 }
 
 // token function
-export const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1hr" });
-};
+
+authSchema.methods.createJWT = async function(userId){
+    const token = jwt.sign(
+        {userId:this._id},
+         process.env.JWT_SECRET,{
+            expiresIn:'14d'
+        });
+        return token
+}
+
 
 
 const Auth = mongoose.model("Auth", authSchema);

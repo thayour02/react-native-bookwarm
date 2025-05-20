@@ -4,7 +4,7 @@ import Auth from "../model/auth.js";
 export const authMiddleware = async (req, res, next) => {
   try {
     // get token from header
-    const token = req.headers("Authorization").replace("Bearer", "");
+    const token = req.headers("Authorization").replace("Bearer"," ");
     if (!token) return res.status(401).json({ message: "Unauthorized" });
 
     // verify token

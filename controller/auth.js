@@ -47,9 +47,9 @@ export const Register = async(req,res)=>{
 
 
         //generate token
-        const token = generateToken(user._id)
+        const token = await user.createJWT(res, user._id)
 
-
+        // send token to client
         res.status(201).json({
             sucess:true,
             message:"account created successfully",
@@ -82,7 +82,8 @@ export const Login = async(req,res)=>{
         const isPasswordCorrect = await user.comparePassword(password)
         if(!isPasswordCorrect) return res.status(400).json({message:"invalid credentials"})
 
-        const token = generateToken(user._id)
+        const token = await user.createJWT(res, user._id)
+
         res.status(201).json({
             sucess:true,
             message:"account logged in successfully",
@@ -97,6 +98,7 @@ export const Login = async(req,res)=>{
 
         
     } catch (error) {
+        console.log(error)
         res.status(500).json({message:'internal error'})
     }
 }
