@@ -15,7 +15,7 @@ export const createBook = async (req, res) => {
         // upload image to cloudinary
         const result = await cloudinary.uploader.upload(image);
 
-        const imageUrl = result.secure.url;
+        const imageUrl = result.secure_url;
 
 
         // Create a new book and save it to the database
