@@ -3,6 +3,8 @@ import cloudinary from "../database/cloudinary.js";
 import Book from "../model/books.js";
 
 
+
+
 export const createBook = async (req, res) => {
     try {
         const { title, caption, image, rating } = req.body;
@@ -13,7 +15,9 @@ export const createBook = async (req, res) => {
         }
         
         // upload image to cloudinary
-        const result = await cloudinary.uploader.upload(image);
+        const result = await cloudinary.uploader.upload(image,{
+      folder: 'books',
+    });
 
         const imageUrl = result.secure_url;
 
@@ -28,7 +32,6 @@ export const createBook = async (req, res) => {
         });
 
         await newBook.save();
-
         res.status(201).json({
             success: true,
             message: 'Book created successfully',
@@ -38,6 +41,8 @@ export const createBook = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 export const getAllBooks = async(req,res)=>{
     try {
         const page = req.query.page || 1;
@@ -73,7 +78,10 @@ export const getBookbyUser = async(req,res)=>{
                 book,
             })
         } catch (error) {
-        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        })
     }
 
 }

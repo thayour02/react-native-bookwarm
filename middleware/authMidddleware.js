@@ -1,11 +1,14 @@
 import jwt from "jsonwebtoken";
 import Auth from "../model/auth.js";
+import "dotenv/config";
+
+
 
 
 
 export const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.header("Authorization").replace("Bearer ", "") ;
     // check if token exist
     if (!token) return res.status(401).json({ message: "Unauthorized" });
 
@@ -14,12 +17,12 @@ export const authMiddleware = async (req, res, next) => {
 
     // check if user exist
     const user = await Auth.findById(decoded.userId).select("-password");
-    if (!user) return res.status(401).json({ message: "Invalid token" });
+    if (!user) return res.status(401).json({ message: "user not found" });
 
 // attach user to request
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Invalid token SENT" });
   }
 };
