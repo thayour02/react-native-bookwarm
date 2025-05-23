@@ -54,11 +54,14 @@ export const Register = async(req,res)=>{
             sucess:true,
             message:"account created successfully",
             token,
+                
             user:{
                 _id:user._id,
                 username: user.username,
                 email: user.email,
-                profileImage: user.profileImage
+                profileImage: user.profileImage,
+                user:user?._doc?.createdAt,
+                password:undefined,
             }
         })
 
@@ -92,13 +95,14 @@ export const Login = async(req,res)=>{
                 _id:user._id,
                 username: user.username,
                 email: user.email,
-                profileImage: user.profileImage
+                profileImage: user.profileImage,
+                user:user?._doc?.createdAt,
+                password:undefined,
             }
         })
 
         
     } catch (error) {
-        console.log(error)
         res.status(500).json({message:'internal error'})
     }
 }
