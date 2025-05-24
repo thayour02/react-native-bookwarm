@@ -7,6 +7,7 @@ const bookSchema = new mongoose.Schema({
     image: { type: String, required: true },
     rating: { type: Number, required: true, min: 1, max: 5 },
     user:{type: mongoose.Schema.Types.ObjectId, ref:'Auth', required:true},
+    author:{ type: String, required: true }
 }, { timestamps: true });
 
 
