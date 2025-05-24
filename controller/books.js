@@ -87,11 +87,14 @@ export const getBookbyUser = async(req,res)=>{
 }
 
 export const deleteBook = async (req, res) => {
+
    try {
-    const {bookId} = req.params
+    const { bookId } = req.params
 
-    if(!bookId) return res.status(400).json({message:"book not found"})
 
+
+        const book = await Book.findById(bookId);
+    if(!book) return res.status(400).json({message:"book not found"})
     if(book.user.toString() !== req.user._id.toString()) return res.status(400).json({message:"not authorized"})
 
         if(book.image && book.image.includes("cloudinary")) {
@@ -103,12 +106,13 @@ export const deleteBook = async (req, res) => {
            }
         }
 
-        const book = await Book.findByIdAndDelete(bookId)
+        const deleteBook = await Book.findByIdAndDelete(bookId)
+
 
         res.status(200).json({
             success: true,
             message: "Book deleted successfully",
-            book
+           deleteBook
         })
    } catch (error) {
     res.status(500).json({
